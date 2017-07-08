@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--ScenicMapper映射文件  -->
+<mapper namespace="com.gotr.web.mapper.CityMapper">
+
+    <select id="findViewInfo" resultMap="ViewRM">
+        SELECT * FROM view_p v
+        LEFT JOIN
+        (SELECT view_id vp_id,photos_url FROM view_photo_p) vp
+        ON
+        vp_id = v.view_id
+        WHERE  view_id = #{ viewId } GROUP BY view_id
+    </select>
+
+
+
+    <select id="findNum" resultType="int">
+        SELECT count(*) FROM city_p
+    </select>
+
+
+
+    <select id="findAll" resultMap="CityRM">
+        SELECT city_id,name,photo_url,tripNum FROM city_p  ORDER BY tripNum  limit #{ prepage },#{ nextpage }
+    </select>
+
+    <resultMap id="CityRM" type="City" autoMapping="true">
+        <id column="city_id" property="cityId"></id>
+        <result column="name" property="name"></result>
+        <result column="photo_url" property="photoUrl"></result>
+        <result column="tripNum" property="tripNum"></result>
+    </resultMap>
+
+    <select id="findView" resultMap="ViewRM">
+        SELECT *  FROM view_p v
+        LEFT JOIN
+        (SELECT  view_id vp_id,photos_url FROM  view_photo_p) vp
+        ON v.view_id = vp.vp_id WHERE v.city_id = #{ cityId } GROUP BY view_id LIMIT 0,9
+    </select>
+    <resultMap id="ViewRM" type="View" autoMapping="true">
+        <id column="view_id" property="viewId"></id>
+        <result column="name" property="name"></result>
+        <collection property="pois" ofType="Pois">
+            <id column="view_id" property="id"></id>
+            <result column="photos_url" property="location"></result>
+
+        </collection>
+    </resultMap>
+
+    <select id="findHotel" resultMap="HotelRM">
+        SELECT *  FROM hotel_p h
+        LEFT JOIN
+        (SELECT  hotel_id vp_id,photos_url FROM  hotel_photo_p) vp
+        ON h.hotel_id = vp.vp_id WHERE h.city_id = #{ cityId } GROUP BY hotel_id LIMIT 0,3
+    </select>
+
+    <resultMap id="HotelRM" type="Hotel" autoMapping="true">
+        <id column="hotel_id" property="hotelId"></id>
+        <result column="name" property="name"></result>
+        <result column="location" property="location"></result>
+        <result column="address" property="address"></result>
+        <result column="type" property="type"></result>
+        <collection property="pois" ofType="Pois">
+            <id column="hotel_id" property="id"></id>
+            <result column="photos_url" property="location"></result>
+        </collection>
+    </resultMap>
+
+    <insert id="saveCity">
+          insert ignore into city_p(city_id,name,photo_url,tripNum,create_time)  VALUES (
+            #{cityId},
+            #{name},
+            #{photoUrl},
+            0,
+            #{createTime}
+          )
+
+    </insert>
+
+    <update id="updateCityTripNum">
+          update city_p set tripNum=tripNum+#{tripNum} where city_id=#{cityId}
+    </update>
+
+    <select id="findHotelAll" resultMap="HotelRM">
+
+         SELECT *  FROM hotel_p h
+        LEFT JOIN
+        (SELECT  hotel_id vp_id,photos_url FROM  hotel_photo_p) vp
+        ON h.hotel_id = vp.vp_id WHERE h.city_id = #{ cityId } GROUP BY hotel_id
+
+    </select>
+
+    <select id="findOne" resultType="City">
+        SELECT city_id,name,photo_url,tripNum  FROM city_p WHERE city_id = #{ cityId }
+    </select>
+
+     <select id="viewPhotoUrlList" resultType="string">
+        SELECT * FROM view_photo_p WHERE
+        view_id IN
+        (
+            SELECT view_id FROM view_p WHERE
+            city_id IN
+            (
+                SELECT city_id FROM trip_p WHERE
+                user_Id=#{userId}
+            )
+        )
+    </select>
+
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gotr.sso.mapper.UserMapper">
+	<select id="check" parameterType="map" resultType="int">
+		select * from user_p where username=#{username}
+	</select>
+	
+	
+	  <!--新增用户-->
+    <insert id="saveUser">
+        INSERT INTO user_p(user_id,username,password,create_time,update_time) VALUES (
+            #{userId},
+            #{username},
+            #{password},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE}
+        )
+    </insert>
+	
+	<!--新增用户信息-->
+    <insert id="saveUserInfo">
+        INSERT INTO user_Info_p VALUES (
+            #{userInfoId},
+            #{name},
+            #{gender},
+            #{age},
+            #{email},
+            #{telephone},
+            #{imgUrl},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE}
+        )
+    </insert>
+	
+</mapper>

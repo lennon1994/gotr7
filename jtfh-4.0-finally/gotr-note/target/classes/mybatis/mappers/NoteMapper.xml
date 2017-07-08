@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gotr.note.mapper.NoteMapper">
+	
+    <select id="findNoteList" resultType="com.gotr.dubbo.pojo.Note">
+        SELECT * FROM user_note_p WHERE user_id=#{userId}
+    </select>
+    <select id="findAllNote" resultType="com.gotr.dubbo.pojo.Note">
+        SELECT * FROM user_note_p limit #{prepage},#{nextpage}
+    </select>
+
+    <select id="findNum" resultType="int">
+          SELECT count(*) FROM user_note_p
+    </select>
+	
+</mapper>

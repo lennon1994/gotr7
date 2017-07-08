@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--ScenicCommentMapper映射文件  -->
+<mapper namespace="com.gotr.trip.mapper.ExportExcelMapper">
+    <select id="findN_T" resultMap="userRM">
+       SELECT * FROM
+(SELECT user_info_id,NAME,gender,age,email,telephone  FROM user_info_p) u
+	LEFT JOIN
+	user_p p
+	ON u.user_info_id= p.user_id
+
+    </select>
+	<resultMap id="userRM" type="User" autoMapping="true">
+        <id column="user_info_id" property="userId"></id>
+        <result column="username" property="username"></result>
+        <association property="userInfo" javaType="UserInfo">
+            <id column="user_info_id" property="userInfoId"></id>
+            <result column="name" property="name"></result>
+            <result column="gender" property="gender"></result>
+            <result column="age" property="age"></result>
+            <result column="email" property="email"></result>
+            <result column="telephone" property="telephone"></result>
+        </association>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gotr.sso.mapper.UserMapper">
+	
+	
+	  <select id="queryByName" parameterType="string" resultMap="UserMap">
+       SELECT p.user_id,p.username,p.password,
+         p.role,i.user_info_id,i.name,i.gender,i.age,
+         i.email,i.telephone,i.img_url from user_p p 
+         LEFT  JOIN user_info_p i
+           on p.user_id=i.user_info_id
+             where p.username=#{username}
+     </select>
+     
+     <!-- 使用resultMap映射实体类和字段之间的一一对应关系  	-->
+     
+     <resultMap type="com.gotr.dubbo.pojo.User" id="UserMap" autoMapping="true">
+         <id property="userId" column="user_id"/>
+         <result property="username" column="username"/>
+         <result property="role" column="role"/>
+         <association property="userInfo" javaType="com.gotr.dubbo.pojo.UserInfo" autoMapping="true">
+             <id property="userInfoId" column="user_info_id"/>
+             <result property="name" column="name"/>
+             <result property="gender" column="gender"/>
+             <result property="age" column="age"/>
+             <result property="email" column="email"/>
+             <result property="telephone" column="telephone"/>
+             <result property="imgUrl" column="img_url"/>
+         </association>
+    </resultMap>
+	<select id="check" resultType="string">
+		select password from user_p where username=#{username}
+	</select>
+	  <!--新增用户-->
+    <insert id="saveUser">
+        INSERT INTO user_p(user_id,username,password,create_time,update_time) VALUES (
+            #{userId},#{username},#{password},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE}
+        )
+    </insert> 
+	
+	<!--新增用户信息-->
+    <insert id="saveUserInfo">
+        INSERT INTO user_Info_p(user_info_id,name,gender,age,email,telephone,img_url,create_time,update_time) 
+        VALUES (
+            #{userInfoId},#{name},#{gender},#{age},
+            #{email},#{telephone},#{imgUrl},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE}
+        )
+    </insert>
+    
+    <!-- 游记评论中根据评论用户ID查询用户 -->
+    <select id="findOne" parameterType="string" resultMap="UserMap">
+       SELECT p.user_id,p.username,p.password,p.role,i.name,i.gender,i.age,
+         	i.email,i.telephone,i.img_url from user_p p 
+         LEFT  JOIN user_info_p i
+         on p.user_id=i.user_info_id
+         where p.user_id=#{userId}
+     </select>
+    
+    
+</mapper>

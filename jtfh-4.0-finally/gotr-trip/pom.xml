@@ -1,0 +1,95 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>gotr-trip</artifactId>
+  <packaging>war</packaging>
+  <name>gotr-trip Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+   
+    <dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.0.1</version>
+			<scope>provided</scope>
+		</dependency>
+    
+    	<dependency>
+			<groupId>org.apache.zookeeper</groupId>
+			<artifactId>zookeeper</artifactId>
+			<version>3.4.7</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.abel533</groupId>
+			<artifactId>mapper</artifactId>
+			<version>2.3.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.resteasy</groupId>
+			<artifactId>resteasy-jaxrs</artifactId>
+			<version>3.0.7.Final</version>
+		</dependency>
+    
+    
+    
+    <dependency>
+    	<groupId>com.gotr</groupId>
+    	<artifactId>gotr-dubbo</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+    	<groupId>com.gotr</groupId>
+    	<artifactId>gotr-common</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+     <!-- Apache Shiro 权限架构 -->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-all</artifactId>
+      <version>1.2.3</version>
+    </dependency>
+    
+    
+    <dependency>
+      <groupId>net.sf.json-lib</groupId>
+      <artifactId>json-lib</artifactId>
+      <version>2.4</version>
+      <classifier>jdk15</classifier>
+    </dependency>
+    
+     <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.7</version>
+    </dependency>
+    
+  </dependencies>
+  <build>
+    <plugins>
+			<plugin>
+				<groupId>org.apache.tomcat.maven</groupId>
+				<artifactId>tomcat7-maven-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<port>8095</port>
+					<path>/</path>
+				</configuration>
+			</plugin>
+		</plugins>
+  </build>
+  
+
+  
+  <parent>
+  	<groupId>com.gotr</groupId>
+  	<artifactId>gotr-parent</artifactId>
+  	<version>0.0.1-SNAPSHOT</version>
+  </parent>
+</project>

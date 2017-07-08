@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--TripMapper映射文件  -->
+<mapper namespace="com.gotr.trip.mapper.TripMapper">
+    <insert id="saveTrip">
+        insert into trip_p(trip_id,user_id,hotel_id,city_id,start_name,trip_time,start_time,end_time,create_time) values(
+          #{trip.tripId},
+          #{trip.userId},
+          #{hotelId},
+          #{trip.cityId},
+          #{trip.startName},
+          #{trip.tripTime},
+          #{trip.startTime},
+          #{trip.endTime},
+          #{trip.createTime}
+        )
+    </insert>
+
+<select id="findViewByUser" resultMap="findRM">
+        select t.*,v.name v_name,v.type v_type,v.address v_address,v.location v_location from
+        (select t.*,view_id from
+        (select t.*,h.address h_address,h.location h_location,h.name h_name,h.type h_type from
+        (select t.*,c.name end_name from
+        (select * from trip_p where user_id=#{user_id}) t
+        left join city_p c
+        ON
+        c.city_id=t.city_id) t
+        left join hotel_p h
+        on h.hotel_id=t.hotel_id) t
+        left join trip_view_p p
+        on p.trip_id=t.trip_id) t
+        LEFT JOIN view_p v
+        on v.view_id=t.view_id
+        order by create_time desc
+
+
+</select>
+
+    <resultMap id="findRM" type="com.gotr.dubbo.pojo.Trip">
+        <id column="trip_id" property="tripId"></id>
+        <result column="user_id" property="userId"></result>
+        <result column="start_name" property="startName"></result>
+        <result column="trip_time" property="tripTime"></result>
+        <result column="start_time" property="startTime"></result>
+        <result column="end_time" property="endTime"></result>
+        <result column="end_name" property="endName"></result>
+        <association property="hotel" javaType="com.gotr.dubbo.pojo.Hotel">
+            <id column="hotel_id" property="hotelId"></id>
+            <result column="h_address" property="address"></result>
+            <result column="h_location" property="location"></result>
+            <result column="h_name" property="name"></result>
+            <result column="h_type" property="type"></result>
+        </association>
+        <collection property="viewList" ofType="com.gotr.dubbo.pojo.View" >
+            <id column="view_id" property="viewId"></id>
+            <result column="v_address" property="address"></result>
+            <result column="v_location" property="location"></result>
+            <result column="v_name" property="name"></result>
+            <result column="v_type" property="type"></result>
+        </collection>
+    </resultMap>
+
+
+
+
+</mapper>

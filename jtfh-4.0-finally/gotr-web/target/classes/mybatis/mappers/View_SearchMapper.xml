@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--ScenicMapper映射文件  -->
+<mapper namespace="com.gotr.web.mapper.View_SearchMapper">
+
+    <select id="findViewInfo" resultMap="View_SearchRM">
+       SELECT city_name,view_name,score,type,address,intro,images 
+       FROM view_search WHERE view_id=#{viewId}
+    </select>
+
+	<resultMap type="View_Search" id="View_SearchRM" autoMapping="true">
+		<id column="view_id" property="view_id"/>
+		<result column="city_name" property="city_name"/>
+		<result column="view_name" property="view_name"/>
+	</resultMap>
+
+</mapper>

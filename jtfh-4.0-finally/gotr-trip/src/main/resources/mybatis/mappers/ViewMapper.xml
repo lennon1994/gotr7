@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--HotelMapper映射文件  -->
+<mapper namespace="com.gotr.trip.mapper.ViewMapper">
+    <insert id="saveView">
+        insert ignore into view_p(city_id,view_id,name,type,address,location,create_time)  values(
+           #{cityId},
+          #{pois.id},
+          #{pois.name},
+          #{pois.type},
+          #{pois.address},
+          #{pois.location},
+          #{createTime}
+        )
+    </insert>
+
+    <insert id="saveViewId">
+
+        insert  into  trip_view_p VALUES (#{viewId},#{tripId})
+
+    </insert>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gotr.trip.mapper.UserMapper">
+    <!--查询所有用户信息-->
+
+    <!--结果集的封装-->
+    <resultMap type="User" id="userRM" autoMapping="true">
+        <id column="user_id" property="userId"/>
+        <association property="userInfo" javaType="UserInfo">
+            <id column="user_info_id" property="userInfoId"/>
+            <result column="user_info_id" property="userInfoId"/>
+            <result column="name" property="name"/>
+            <result column="gender" property="gender"/>
+            <result column="age" property="age"/>
+            <result column="email" property="email"/>
+            <result column="telephone" property="telephone"/>
+            <result column="img_url" property="imgUrl"/>
+        </association>
+    </resultMap>
+
+    <select id="findOne" resultMap="userRM">
+        SELECT * FROM
+        user_p u
+        LEFT JOIN
+        (SELECT user_info_id,name,gender,age,email,telephone,img_url from user_info_p) p
+        ON u.user_id=p.user_info_id
+        WHERE user_id=#{userId}
+    </select>
+
+
+
+
+    <!--新增用户-->
+    <insert id="saveUser">
+        INSERT INTO user_p(user_id,username,password,create_time,update_time) VALUES (
+            #{userId},
+            #{username},
+            #{password},
+            #{createTime,jdbcType=DATE},
+            #{updateTime,jdbcType=DATE}
+        )
+    </insert>
+
+
+    <!--根据用户名和密码查询用户-->
+    <select id="findUserByU_P" resultMap="userRM">
+        SELECT * FROM
+        user_p u
+            LEFT JOIN
+        (SELECT user_info_id,name,gender,age,email,telephone,img_url from user_info_p) p
+            ON u.user_id=p.user_info_id
+            WHERE username=#{username} AND password=#{password}
+    </select>
+
+    <!--查询所有用户信息-->
+    <select id="findAll" resultMap="userRM">
+        SELECT * FROM
+        user_p u
+        LEFT JOIN
+        (SELECT user_info_id,name,gender,age,email,telephone,img_url from user_info_p) p
+        ON u.user_id=p.user_info_id
+    </select>
+    <!--根据用户名查询用户-->
+    <select id="findUserByUsername" resultMap="userRM">
+        SELECT * FROM
+        user_p u
+        LEFT JOIN
+        (SELECT user_info_id,name,gender,age,email,telephone,img_url from user_info_p) p
+        ON u.user_id=p.user_info_id
+        WHERE username=#{username}
+    </select>
+
+</mapper>
